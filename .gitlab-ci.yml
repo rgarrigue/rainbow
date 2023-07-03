@@ -1,0 +1,20 @@
+stages:
+  - release
+
+release:
+  stage: release
+  tags:
+    - aws-developers-runner
+  image:
+    name: goreleaser/goreleaser
+    entrypoint: [""]
+  only:
+    - tags
+  variables:
+    # Disable shallow cloning so that goreleaser can diff between tags to
+    # generate a changelog.
+    GIT_DEPTH: 0
+  script:
+    - apk add aws-cli
+    - aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 728080024150.dkr.ecr.eu-central-1.amazonaws.com
+    - goreleaser release --clean

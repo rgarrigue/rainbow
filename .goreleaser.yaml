@@ -1,0 +1,78 @@
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+# vim: set ts=2 sw=2 tw=0 fo=cnqojbefore:
+---
+# gitlab_urls:
+#   api: https://gitlab.cloud/api/v4/
+#   download: https://gitlab.cloud
+#   use_package_registry: true
+#   # use_job_token: true
+
+before:
+  hooks:
+    - go mod tidy
+
+checksum:
+  name_template: "checksums.txt"
+
+changelog:
+  use: gitlab
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "typo"
+      - "^test:"
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - format: tar.gz
+    # this name template makes the OS and Arch compatible with the results of uname.
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    # use zip for windows archives
+    format_overrides:
+      - goos: windows
+        format: zip
+
+nfpms:
+  - maintainer: RG
+    description: Rainbow
+    homepage: https://github.com/rgarrigue/rainbow
+    license: GPLv3
+    formats:
+      - deb
+      - rpm
+      - apk
+
+dockers:
+  - image_templates:
+      - "1234567890.dkr.ecr.eu-central-1.amazonaws.com/rainbow:{{ .Version }}"
+      - "1234567890.dkr.ecr.eu-central-1.amazonaws.com/rainbow:{{ .Tag }}"
+      - "1234567890.dkr.ecr.eu-central-1.amazonaws.com/rainbow:{{ .Major }}"
+      - "1234567890.dkr.ecr.eu-central-1.amazonaws.com/rainbow:{{ .Major }}.{{ .Minor }}"
+      - "1234567890.dkr.ecr.eu-central-1.amazonaws.com/rainbow:latest"
+    dockerfile: Dockerfile
+    build_flag_templates:
+      - --label=org.opencontainers.image.title={{ .ProjectName }}
+      - --label=org.opencontainers.image.description={{ .ProjectName }}
+      - --label=org.opencontainers.image.url=https://github.com/rgarrigue/rainbow
+      - --label=org.opencontainers.image.source=https://github.com/rgarrigue/rainbow
+      - --label=org.opencontainers.image.version={{ .Version }}
+      - --label=org.opencontainers.image.created={{ time "2000-01-00T00:00:00Z00:00" }}
+      - --label=org.opencontainers.image.revision={{ .FullCommit }}
+      - --label=org.opencontainers.image.licenses=GPLv3
