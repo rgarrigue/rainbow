@@ -61,11 +61,17 @@ nfpms:
 
 dockers:
   - image_templates:
-      - "1234567890.dkr.ecr.eu-central-1.amazonaws.com/rainbow:{{ .Version }}"
-      - "1234567890.dkr.ecr.eu-central-1.amazonaws.com/rainbow:{{ .Tag }}"
-      - "1234567890.dkr.ecr.eu-central-1.amazonaws.com/rainbow:{{ .Major }}"
-      - "1234567890.dkr.ecr.eu-central-1.amazonaws.com/rainbow:{{ .Major }}.{{ .Minor }}"
-      - "1234567890.dkr.ecr.eu-central-1.amazonaws.com/rainbow:latest"
+      # AWS ECR
+      # - "1234567890.dkr.ecr.eu-central-1.amazonaws.com/rainbow:{{ .Version }}"
+      # - "1234567890.dkr.ecr.eu-central-1.amazonaws.com/rainbow:{{ .Tag }}"
+      # - "1234567890.dkr.ecr.eu-central-1.amazonaws.com/rainbow:{{ .Major }}"
+      # - "1234567890.dkr.ecr.eu-central-1.amazonaws.com/rainbow:{{ .Major }}.{{ .Minor }}"
+      # - "1234567890.dkr.ecr.eu-central-1.amazonaws.com/rainbow:latest"
+      - "rgarrigue/rainbow:{{ .Version }}"
+      - "rgarrigue/rainbow:{{ .Tag }}"
+      - "rgarrigue/rainbow:{{ .Major }}"
+      - "rgarrigue/rainbow:{{ .Major }}.{{ .Minor }}"
+      - "rgarrigue/rainbow:latest"
     dockerfile: Dockerfile
     build_flag_templates:
       - --label=org.opencontainers.image.title={{ .ProjectName }}
