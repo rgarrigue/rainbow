@@ -67,11 +67,18 @@ dockers:
       # - "1234567890.dkr.ecr.eu-central-1.amazonaws.com/rainbow:{{ .Major }}"
       # - "1234567890.dkr.ecr.eu-central-1.amazonaws.com/rainbow:{{ .Major }}.{{ .Minor }}"
       # - "1234567890.dkr.ecr.eu-central-1.amazonaws.com/rainbow:latest"
-      - "rgarrigue/rainbow:{{ .Version }}"
-      - "rgarrigue/rainbow:{{ .Tag }}"
-      - "rgarrigue/rainbow:{{ .Major }}"
-      - "rgarrigue/rainbow:{{ .Major }}.{{ .Minor }}"
-      - "rgarrigue/rainbow:latest"
+      # Docker Hub
+      - "docker.io/rgarrigue/rainbow:{{ .Version }}"
+      - "docker.io/rgarrigue/rainbow:{{ .Tag }}"
+      - "docker.io/rgarrigue/rainbow:{{ .Major }}"
+      - "docker.io/rgarrigue/rainbow:{{ .Major }}.{{ .Minor }}"
+      - "docker.io/rgarrigue/rainbow:latest"
+      # Github registry
+      - "ghcr.io/rgarrigue/rainbow:{{ .Version }}"
+      - "ghcr.io/rgarrigue/rainbow:{{ .Tag }}"
+      - "ghcr.io/rgarrigue/rainbow:{{ .Major }}"
+      - "ghcr.io/rgarrigue/rainbow:{{ .Major }}.{{ .Minor }}"
+      - "ghcr.io/rgarrigue/rainbow:latest"
     dockerfile: Dockerfile
     build_flag_templates:
       - --label=org.opencontainers.image.title={{ .ProjectName }}
