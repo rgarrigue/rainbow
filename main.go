@@ -15,6 +15,8 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"github.com/alecthomas/kong"
+
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 type Globals struct {
@@ -96,6 +98,7 @@ func serve(color string) {
 			}))
 
 	http.Handle("/", rootHandler)
+	http.Handle("/metrics", promhttp.Handler())
 
 	log.Info().Msg("Listening on port 3000...")
 	if err := http.ListenAndServe(":3000", nil); err != nil {

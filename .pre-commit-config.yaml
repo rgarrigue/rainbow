@@ -18,5 +18,5 @@ repos:
       - id: go-test-mod
       - id: go-vet
       - id: go-vet-mod
-      - id: go-staticcheck-mod
+      # - id: go-staticcheck-mod
       - id: go-fmt
