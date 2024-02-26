@@ -1,0 +1,10 @@
+# syntax=docker/dockerfile:1
+FROM golang:1.22 AS builder
+WORKDIR /src
+COPY . /src
+RUN go build -o /src/rainbow ./main.go
+RUN /src/rainbow --version
+
+FROM alpine
+COPY --from=builder /src/rainbow /rainbow
+ENTRYPOINT ["/rainbow"]
